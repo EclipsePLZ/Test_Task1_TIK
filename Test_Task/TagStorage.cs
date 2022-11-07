@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Test_Task {
     /// <summary>
-    /// Класс TagStorage
-    /// Позволяет работать с коллекцией тэгов
+    /// Класс по работе с коллекцией тэгов
     /// </summary>
     internal class TagStorage {
         public TagItem Root = new TagItem("Root", "none");

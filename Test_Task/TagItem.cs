@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Test_Task {
     /// <summary>
-    /// Класс TagItem
-    /// Позволяет работать с Тэгами
+    /// Класс по работе с Тэгами
     /// </summary>
     internal class TagItem {
         /// <summary>
