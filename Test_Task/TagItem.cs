@@ -13,12 +13,12 @@ namespace Test_Task {
         /// <summary>
         /// Свойство Name определяет имя тэга
         /// </summary>
-        public string Name { get; private set; }
+        internal string Name { get; private set; }
 
         /// <summary>
         /// Свойство TypeValue определяет тип хранимого значения
         /// </summary>
-        private string TypeValue { get; set; }
+        private string TypeValue { get; }
 
         /// <summary>
         /// Свойство Value определяет значения тэга
@@ -28,47 +28,94 @@ namespace Test_Task {
         /// <summary>
         /// Свойство Level определяет уровень вложенности тэга
         /// </summary>
-        private int Level { get; }
+        public int Level { get; }
 
         /// <summary>
         /// Свойство FullPath определяет полный путь к тэгу
         /// </summary>
-        private string FullPath { get; }
+        private string FullPath { get; set; }
 
         /// <summary>
         /// Поле childNodes содержит список дочерних тэгов
         /// </summary>
         private List<TagItem> childNodes;
 
-        public TagItem(string name, string typeValue, object value = null, int level = 0, string fullPath = "") {
+        /// <summary>
+        /// Конструктор Тэга
+        /// </summary>
+        /// <param name="name">Имя тэга</param>
+        /// <param name="typeValue">Тип значения тэга</param>
+        /// <param name="value">Значение тэга</param>
+        /// <param name="parentFullPath">Полный путь к родительскому тэгу</param>
+        public TagItem(string name, string typeValue, object value = null, string parentFullPath = "") {
             Name = name;
             TypeValue = typeValue;
             Value = null;
-            Level = level;
-            FullPath = fullPath;
+            Level = parentFullPath.Split('.').Length;
+            FullPath = parentFullPath + $".{name}";
             childNodes = new List<TagItem>();
         }
 
+        /// <summary>
+        /// Предоставление типа хранимого значения
+        /// </summary>
+        /// <returns>Тип хранимого значния</returns>
         public string GetValueType() {
             return TypeValue;
         }
 
+        /// <summary>
+        /// Метод для чтения значения тэга
+        /// </summary>
+        /// <returns>Значение тэга</returns>
         public object GetValue() {
             return Value;
         }
 
+        /// <summary>
+        /// Метод для записи значения тэга
+        /// </summary>
+        /// <param name="value">Новое значение тэга</param>
         public void SetValue(object value) {
             Value = value;
         }
 
+        /// <summary>
+        /// Метод для переименования тэга
+        /// </summary>
+        /// <param name="name">Новое имя тэга</param>
         public void SetName(string name) {
+            UpdateFullPath(Name, name);
             Name = name;
         }
 
-        public void AddChildNode(TagItem childNode) {
+        /// <summary>
+        /// Обновление полного пути для всех дочерних тэгов
+        /// </summary>
+        /// <param name="oldParentName">Старое имя родительского тэга</param>
+        /// <param name="newParentName">Новое имя родительского тэга</param>
+        private void UpdateFullPath(string oldParentName, string newParentName) {
+            FullPath = FullPath.Replace(oldParentName, newParentName);
+            foreach (TagItem child in childNodes) {
+                UpdateFullPath(oldParentName, newParentName);
+            }
+        }
+
+
+        /// <summary>
+        /// Добавление дочернего тэга
+        /// </summary>
+        /// <param name="childName">Имя дочернего тэга</param>
+        /// <param name="childType">Тип значения дочернего тэга</param>
+        public void AddChildNode(string childName, string childType) {
+            TagItem childNode = new TagItem(childName, childType, parentFullPath: FullPath);
             childNodes.Add(childNode);
         }
 
+        /// <summary>
+        /// Удаление дочернего тэга
+        /// </summary>
+        /// <param name="childNode">Дочерний тэг</param>
         public void RemoveChildNode(TagItem childNode) {
             if (childNodes.Contains(childNode)) {
 
@@ -81,6 +128,11 @@ namespace Test_Task {
             }
         }
 
+        /// <summary>
+        /// Доступ к дочернему тэгу по имени
+        /// </summary>
+        /// <param name="childName">Имя дочернего тэга</param>
+        /// <returns></returns>
         public TagItem GetChildNode(string childName) {
             foreach (TagItem child in childNodes) {
                 if (child.Name == childName) {
