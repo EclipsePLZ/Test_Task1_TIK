@@ -8,16 +8,16 @@ namespace Test_Task {
     /// <summary>
     /// Класс по работе с Тэгами
     /// </summary>
-    internal class TagItem {
+    public class TagItem {
         /// <summary>
         /// Свойство Name определяет имя тэга
         /// </summary>
-        internal string Name { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// Свойство Value определяет значения тэга
         /// </summary>
-        private object Value { get; set; }
+        public object Value { get; private set; }
 
         /// <summary>
         /// Свойство Level определяет уровень вложенности тэга
@@ -27,12 +27,12 @@ namespace Test_Task {
         /// <summary>
         /// Свойство FullPath определяет полный путь к тэгу
         /// </summary>
-        private string FullPath { get; set; }
+        public string FullPath { get; private set; }
 
         /// <summary>
-        /// Поле childNodes содержит список дочерних тэгов
+        /// Свойство childNodes определяет список дочерних тэгов
         /// </summary>
-        public List<TagItem> childNodes;
+        public List<TagItem> childNodes { get; private set; }
 
         /// <summary>
         /// Конструктор Тэга
@@ -55,14 +55,6 @@ namespace Test_Task {
         /// <returns>Тип хранимого значния</returns>
         public Type GetValueType() {
             return Value.GetType();
-        }
-
-        /// <summary>
-        /// Метод для чтения значения тэга
-        /// </summary>
-        /// <returns>Значение тэга</returns>
-        public object GetValue() {
-            return Value;
         }
 
         /// <summary>

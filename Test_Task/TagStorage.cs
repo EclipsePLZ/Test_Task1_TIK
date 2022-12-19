@@ -52,16 +52,18 @@ namespace Test_Task {
         }
 
         private void TagTreeToXml(ref XElement parentElem, List<TagItem> tags) {
-            foreach (TagItem tag in tags) {
-                // Создание элемента для тега
-                XElement newTag = new XElement("tag",
-                    new XAttribute("name", tag.Name),
-                    new XElement("value", tag.GetValue()));
+            if (tags.Count() > 0) {
+                foreach (TagItem tag in tags) {
+                    // Создание элемента для тега
+                    XElement newTag = new XElement("tag",
+                        new XAttribute("name", tag.Name),
+                        new XElement("value", tag.Value));
 
-                TagTreeToXml(ref newTag, tag.childNodes);
+                    TagTreeToXml(ref newTag, tag.childNodes);
 
-                // Добавление элемента в дерево тэгов
-                parentElem.Add(newTag);
+                    // Добавление элемента в дерево тэгов
+                    parentElem.Add(newTag);
+                }
             }
         }
     }

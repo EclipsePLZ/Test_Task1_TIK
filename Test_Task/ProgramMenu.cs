@@ -51,6 +51,7 @@ namespace Test_Task {
                         tagStorage.UploadTagTreeToXML();
                         break;
                     case "3":
+                        PrintTagTree(tagStorage.Root.childNodes);
                         break;
                     case "4":
                         break;
@@ -67,6 +68,19 @@ namespace Test_Task {
                     default:
                         Console.WriteLine("Недопустимое действие!");
                         break;
+                }
+            }
+        }
+
+        private void PrintTagTree(List<TagItem> tags) {
+            if (tags.Count() > 0) {
+                foreach (TagItem tag in tags) {
+                    Console.WriteLine($"Полный путь: {tag.FullPath}");
+                    Console.WriteLine($"Уровнь вложенности: {tag.Level}");
+                    Console.WriteLine($"Тип значения: {tag.GetValueType()}");
+                    Console.WriteLine($"Значение: {tag.Value}\n");
+
+                    PrintTagTree(tag.childNodes);
                 }
             }
         }
