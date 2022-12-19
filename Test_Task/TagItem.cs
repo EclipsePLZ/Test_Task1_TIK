@@ -32,7 +32,7 @@ namespace Test_Task {
         /// <summary>
         /// Поле childNodes содержит список дочерних тэгов
         /// </summary>
-        private List<TagItem> childNodes;
+        public List<TagItem> childNodes;
 
         /// <summary>
         /// Конструктор Тэга

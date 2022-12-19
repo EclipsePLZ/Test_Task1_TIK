@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Test_Task {
     /// <summary>
@@ -10,7 +11,7 @@ namespace Test_Task {
     /// </summary>
     internal class TagStorage {
         public TagItem Root = new TagItem(name:"Root");
-        private const string xmlPath = "tagTree.xml";
+        private const string xmlFilename = "tagTree.xml";
 
         /// <summary>
         /// Поиск по полному имени тэга
@@ -39,7 +40,29 @@ namespace Test_Task {
         /// Выгрузка дерева тэгов в xml файл
         /// </summary>
         public void UploadTagTreeToXML() {
+            XDocument xDoc = new XDocument();
+            
+            // Создаем корневой элемент
+            XElement rootElem = new XElement("root");
 
+            TagTreeToXml(ref rootElem, Root.childNodes);
+
+            xDoc.Add(rootElem);
+            xDoc.Save(xmlFilename);
+        }
+
+        private void TagTreeToXml(ref XElement parentElem, List<TagItem> tags) {
+            foreach (TagItem tag in tags) {
+                // Создание элемента для тега
+                XElement newTag = new XElement("tag",
+                    new XAttribute("name", tag.Name),
+                    new XElement("value", tag.GetValue()));
+
+                TagTreeToXml(ref newTag, tag.childNodes);
+
+                // Добавление элемента в дерево тэгов
+                parentElem.Add(newTag);
+            }
         }
     }
 }
