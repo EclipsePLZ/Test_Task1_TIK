@@ -36,6 +36,8 @@ namespace Test_Task {
         /// Запуск работы программы
         /// </summary>
         private void StartWork() {
+            TagStorage tagStorage = new TagStorage();
+
             while (true) {
                 Console.WriteLine("\n\nВведите номер действия:");
                 string action = Console.ReadLine();
@@ -43,8 +45,10 @@ namespace Test_Task {
 
                 switch (action) {
                     case "1":
+                        tagStorage.LoadTagTreeFromXML();
                         break;
                     case "2":
+                        tagStorage.UploadTagTreeToXML();
                         break;
                     case "3":
                         break;

@@ -9,7 +9,8 @@ namespace Test_Task {
     /// Класс по работе с коллекцией тэгов
     /// </summary>
     internal class TagStorage {
-        public TagItem Root = new TagItem("Root", "none");
+        public TagItem Root = new TagItem(name:"Root");
+        private const string xmlPath = "tagTree.xml";
 
         /// <summary>
         /// Поиск по полному имени тэга
@@ -25,6 +26,20 @@ namespace Test_Task {
             }
 
             return node;
+        }
+
+        /// <summary>
+        /// Загрузка дерева тэгов из xml файла
+        /// </summary>
+        public void LoadTagTreeFromXML() {
+
+        }
+        
+        /// <summary>
+        /// Выгрузка дерева тэгов в xml файл
+        /// </summary>
+        public void UploadTagTreeToXML() {
+
         }
     }
 }

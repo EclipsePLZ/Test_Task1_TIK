@@ -15,11 +15,6 @@ namespace Test_Task {
         internal string Name { get; private set; }
 
         /// <summary>
-        /// Свойство TypeValue определяет тип хранимого значения
-        /// </summary>
-        private string TypeValue { get; }
-
-        /// <summary>
         /// Свойство Value определяет значения тэга
         /// </summary>
         private object Value { get; set; }
@@ -46,10 +41,9 @@ namespace Test_Task {
         /// <param name="typeValue">Тип значения тэга</param>
         /// <param name="value">Значение тэга</param>
         /// <param name="parentFullPath">Полный путь к родительскому тэгу</param>
-        public TagItem(string name, string typeValue, object value = null, string parentFullPath = "") {
+        public TagItem(string name, object value = null, string parentFullPath = "") {
             Name = name;
-            TypeValue = typeValue;
-            Value = null;
+            Value = value;
             Level = parentFullPath.Split('.').Length;
             FullPath = parentFullPath + $".{name}";
             childNodes = new List<TagItem>();
@@ -59,8 +53,8 @@ namespace Test_Task {
         /// Предоставление типа хранимого значения
         /// </summary>
         /// <returns>Тип хранимого значния</returns>
-        public string GetValueType() {
-            return TypeValue;
+        public Type GetValueType() {
+            return Value.GetType();
         }
 
         /// <summary>
