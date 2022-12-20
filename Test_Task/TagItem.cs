@@ -19,6 +19,8 @@ namespace Test_Task {
         /// </summary>
         public object Value { get; private set; }
 
+        public Type ValueType { get; private set; }
+
         /// <summary>
         /// Свойство Level определяет уровень вложенности тэга
         /// </summary>
@@ -38,23 +40,16 @@ namespace Test_Task {
         /// Конструктор Тэга
         /// </summary>
         /// <param name="name">Имя тэга</param>
-        /// <param name="typeValue">Тип значения тэга</param>
+        /// <param name="type">Тип тэга</param>
         /// <param name="value">Значение тэга</param>
         /// <param name="parentFullPath">Полный путь к родительскому тэгу</param>
-        public TagItem(string name, object value = null, string parentFullPath = "") {
+        public TagItem(string name, Type type, object value = null, string parentFullPath = "") {
             Name = name;
             Value = value;
+            ValueType = type;
             Level = parentFullPath.Split('.').Length;
             FullPath = parentFullPath + $".{name}";
             childNodes = new List<TagItem>();
-        }
-
-        /// <summary>
-        /// Предоставление типа хранимого значения
-        /// </summary>
-        /// <returns>Тип хранимого значния</returns>
-        public Type GetValueType() {
-            return Value.GetType();
         }
 
         /// <summary>
@@ -92,8 +87,13 @@ namespace Test_Task {
         /// </summary>
         /// <param name="childName">Имя дочернего тэга</param>
         /// <param name="childType">Тип значения дочернего тэга</param>
-        public void AddChildNode(string childName, string childType) {
-            TagItem childNode = new TagItem(childName, childType, parentFullPath: FullPath);
+        public void AddChildNode(string childName, Type valueType) {
+            TagItem childNode = new TagItem(name:childName, type: valueType, parentFullPath: FullPath);
+            childNodes.Add(childNode);
+        }
+
+        public void AddChildNode(TagItem childNode) {
+            childNode.FullPath = FullPath + $".{childNode.Name}";
             childNodes.Add(childNode);
         }
 

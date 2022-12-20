@@ -10,7 +10,7 @@ namespace Test_Task {
     /// Класс по работе с коллекцией тэгов
     /// </summary>
     internal class TagStorage {
-        public TagItem Root = new TagItem(name:"Root");
+        public TagItem Root = new TagItem(name:"Root", type:null);
         private const string xmlFilename = "tagTree.xml";
 
         /// <summary>
@@ -32,8 +32,31 @@ namespace Test_Task {
         /// <summary>
         /// Загрузка дерева тэгов из xml файла
         /// </summary>
-        public void LoadTagTreeFromXML() {
+        public bool LoadTagTreeFromXML() {
+            XDocument xDoc = new XDocument();
+            XElement root;
+            try {
+                xDoc = XDocument.Load(xmlFilename);
+                root = xDoc.Element("Root");
+            }
+            catch {
+                return false;
+            }
 
+            TagTreeFromXML(root, Root);
+
+            return true;
+        }
+
+        private void TagTreeFromXML(XElement parentElem, TagItem parentTag) {
+            foreach (XElement childElem in parentElem.Elements("TagItem")) {
+                Type valueType = Type.GetType(childElem.Attribute("Type").Value);
+                TagItem childTag = new TagItem(name: childElem.Attribute("Name").Value, type: valueType,
+                    value: Convert.ChangeType(childElem.Element("Value").Value, valueType));
+                parentTag.AddChildNode(childTag);
+
+                TagTreeFromXML(childElem, childTag);
+            }
         }
         
         /// <summary>
@@ -43,7 +66,7 @@ namespace Test_Task {
             XDocument xDoc = new XDocument();
             
             // Создаем корневой элемент
-            XElement rootElem = new XElement("root");
+            XElement rootElem = new XElement("Root");
 
             TagTreeToXml(ref rootElem, Root.childNodes);
 
@@ -55,9 +78,10 @@ namespace Test_Task {
             if (tags.Count() > 0) {
                 foreach (TagItem tag in tags) {
                     // Создание элемента для тега
-                    XElement newTag = new XElement("tag",
-                        new XAttribute("name", tag.Name),
-                        new XElement("value", tag.Value));
+                    XElement newTag = new XElement("TagItem",
+                        new XAttribute("Name", tag.Name),
+                        new XAttribute("Type", tag.ValueType),
+                        new XElement("Value", tag.Value));
 
                     TagTreeToXml(ref newTag, tag.childNodes);
 

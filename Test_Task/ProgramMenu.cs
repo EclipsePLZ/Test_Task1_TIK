@@ -77,7 +77,7 @@ namespace Test_Task {
                 foreach (TagItem tag in tags) {
                     Console.WriteLine($"Полный путь: {tag.FullPath}");
                     Console.WriteLine($"Уровнь вложенности: {tag.Level}");
-                    Console.WriteLine($"Тип значения: {tag.GetValueType()}");
+                    Console.WriteLine($"Тип значения: {tag.ValueType}");
                     Console.WriteLine($"Значение: {tag.Value}\n");
 
                     PrintTagTree(tag.childNodes);
