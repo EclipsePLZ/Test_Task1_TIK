@@ -89,6 +89,17 @@ namespace Test_Task {
                         }
                         break;
                     case "6":
+                        Console.WriteLine("Полный путь:");
+                        string fullPath = Console.ReadLine();
+                        Console.WriteLine("Новое имя тэга:");
+                        string newName = Console.ReadLine();
+
+                        if (RenameTag(fullPath, newName)) {
+                            Console.WriteLine("\nТэг успешно переименован");
+                        }
+                        else {
+                            Console.WriteLine("\nНеудалось переименовать тэг");
+                        }
                         break;
                     case "7":
                         ShowMenu();
@@ -133,6 +144,17 @@ namespace Test_Task {
             try {
                 TagItem parentTag = tagStorage.GetTag(parentFullPath);
                 parentTag.AddChildNode(name, Type.GetType(type));
+                return true;
+            }
+            catch {
+                return false;
+            }
+        }
+
+        private bool RenameTag(string fullPath, string newName) {
+            try {
+                TagItem tag = tagStorage.GetTag(fullPath);
+                tag.SetName(newName);
                 return true;
             }
             catch {
