@@ -9,6 +9,8 @@ namespace Test_Task {
     /// Класс по работе в консольном приложении
     /// </summary>
     internal class ProgramMenu {
+        private TagStorage tagStorage = new TagStorage();
+
         /// <summary>
         /// Запуск консольного меню
         /// </summary>
@@ -36,7 +38,6 @@ namespace Test_Task {
         /// Запуск работы программы
         /// </summary>
         private void StartWork() {
-            TagStorage tagStorage = new TagStorage();
 
             while (true) {
                 Console.WriteLine("\n\nВведите номер действия:");
@@ -45,15 +46,31 @@ namespace Test_Task {
 
                 switch (action) {
                     case "1":
-                        tagStorage.LoadTagTreeFromXML();
+                        if (tagStorage.LoadTagTreeFromXML()) {
+                            Console.WriteLine("Дерево тэгов успешно загружено");
+                        }
+                        else {
+                            Console.WriteLine("Не удалось загрузить дерево тэгов!");
+                        }
                         break;
                     case "2":
-                        tagStorage.UploadTagTreeToXML();
+                        if (tagStorage.UploadTagTreeToXML()) {
+                            Console.WriteLine("Дерево тэгов успешно выгружено");
+                        }
+                        else {
+                            Console.WriteLine("Не удалось выгрузить дерево тэгов!");
+                        }
                         break;
                     case "3":
                         PrintTagTree(tagStorage.Root.childNodes);
                         break;
                     case "4":
+                        if (RemoveTag(Console.ReadLine())) {
+                            Console.WriteLine("Тэг успешно удален");
+                        }
+                        else {
+                            Console.WriteLine("Не удалось удалить данный тэг");
+                        }
                         break;
                     case "5":
                         break;
@@ -83,6 +100,19 @@ namespace Test_Task {
                     PrintTagTree(tag.childNodes);
                 }
             }
+        }
+
+        private bool RemoveTag(string fullName) {
+            TagItem tagToRemove;
+            try {
+                tagToRemove = tagStorage.GetTag(fullName);
+            }
+            catch {
+                return false;
+            }
+            TagItem parentTag = tagStorage.GetTag(fullName.Replace($".{tagToRemove.Name}", ""));
+            parentTag.RemoveChildNode(tagToRemove);
+            return true;
         }
 
         /// <summary>

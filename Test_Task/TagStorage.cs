@@ -62,7 +62,7 @@ namespace Test_Task {
         /// <summary>
         /// Выгрузка дерева тэгов в xml файл
         /// </summary>
-        public void UploadTagTreeToXML() {
+        public bool UploadTagTreeToXML() {
             XDocument xDoc = new XDocument();
             
             // Создаем корневой элемент
@@ -71,7 +71,14 @@ namespace Test_Task {
             TagTreeToXml(ref rootElem, Root.childNodes);
 
             xDoc.Add(rootElem);
-            xDoc.Save(xmlFilename);
+
+            try {
+                xDoc.Save(xmlFilename);
+                return true;
+            }
+            catch {
+                return false;
+            }
         }
 
         private void TagTreeToXml(ref XElement parentElem, List<TagItem> tags) {
