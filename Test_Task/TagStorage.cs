@@ -52,7 +52,7 @@ namespace Test_Task {
             foreach (XElement childElem in parentElem.Elements("TagItem")) {
                 Type valueType = Type.GetType(childElem.Attribute("Type").Value);
                 TagItem childTag = new TagItem(name: childElem.Attribute("Name").Value, type: valueType,
-                    value: Convert.ChangeType(childElem.Element("Value").Value, valueType));
+                    value: Convert.ChangeType(childElem.Element("Value").Value, valueType), parentFullPath: parentTag.FullPath);
                 parentTag.AddChildNode(childTag);
 
                 TagTreeFromXML(childElem, childTag);

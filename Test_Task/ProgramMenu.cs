@@ -65,7 +65,8 @@ namespace Test_Task {
                         PrintTagTree(tagStorage.Root.childNodes);
                         break;
                     case "4":
-                        if (RemoveTag(Console.ReadLine())) {
+                        string tagFullPath = Console.ReadLine();
+                        if (RemoveTag(tagFullPath)) {
                             Console.WriteLine("Тэг успешно удален");
                         }
                         else {
@@ -73,6 +74,19 @@ namespace Test_Task {
                         }
                         break;
                     case "5":
+                        Console.WriteLine("Полное имя родительского тэга:");
+                        string parentFullPath = Console.ReadLine();
+                        Console.WriteLine("Имя нового тэга:");
+                        string nameNewTag = Console.ReadLine();
+                        Console.WriteLine("Тип нового тэга:");
+                        string typeNewTag = Console.ReadLine();
+
+                        if (AddTag(parentFullPath, nameNewTag, typeNewTag)) {
+                            Console.WriteLine("\nТэг успешно добавлен");
+                        }
+                        else {
+                            Console.WriteLine("\nНе удалось добавить новый тэг");
+                        }
                         break;
                     case "6":
                         break;
@@ -113,6 +127,17 @@ namespace Test_Task {
             TagItem parentTag = tagStorage.GetTag(fullName.Replace($".{tagToRemove.Name}", ""));
             parentTag.RemoveChildNode(tagToRemove);
             return true;
+        }
+
+        private bool AddTag(string parentFullPath, string name, string type) {
+            try {
+                TagItem parentTag = tagStorage.GetTag(parentFullPath);
+                parentTag.AddChildNode(name, Type.GetType(type));
+                return true;
+            }
+            catch {
+                return false;
+            }
         }
 
         /// <summary>

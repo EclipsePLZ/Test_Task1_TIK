@@ -93,7 +93,6 @@ namespace Test_Task {
         }
 
         public void AddChildNode(TagItem childNode) {
-            childNode.FullPath = FullPath + $".{childNode.Name}";
             childNodes.Add(childNode);
         }
 
