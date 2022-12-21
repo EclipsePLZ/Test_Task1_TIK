@@ -44,11 +44,16 @@ namespace Test_Task {
         /// <param name="value">Значение тэга</param>
         /// <param name="parentFullPath">Полный путь к родительскому тэгу</param>
         public TagItem(string name, Type type, object value = null, string parentFullPath = "") {
+            if (name == "root") {
+                FullPath = "root";
+            }
+            else {
+                FullPath = parentFullPath + $".{name}";
+            }
             Name = name;
             Value = value;
             ValueType = type;
             Level = parentFullPath.Split('.').Length;
-            FullPath = parentFullPath + $".{name}";
             childNodes = new List<TagItem>();
         }
 

@@ -10,7 +10,7 @@ namespace Test_Task {
     /// Класс по работе с коллекцией тэгов
     /// </summary>
     internal class TagStorage {
-        public TagItem Root = new TagItem(name:"Root", type:null);
+        public TagItem Root = new TagItem(name:"root", type:null);
         private const string xmlFilename = "tagTree.xml";
 
         /// <summary>
@@ -19,6 +19,9 @@ namespace Test_Task {
         /// <param name="tagPath">Полное имя тэга без учета Root тэга</param>
         /// <returns>Тэг класса TagItem</returns>
         public TagItem GetTag(string tagPath) {
+            if (tagPath == "") {
+                return Root;
+            }
             string[] tags = tagPath.Split('.');
             TagItem node = Root;
 

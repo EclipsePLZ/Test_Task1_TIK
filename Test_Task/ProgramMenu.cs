@@ -65,6 +65,7 @@ namespace Test_Task {
                         PrintTagTree(tagStorage.Root.childNodes);
                         break;
                     case "4":
+                        Console.WriteLine("Введите полное имя тэга:");
                         string tagFullPath = Console.ReadLine();
                         if (RemoveTag(tagFullPath)) {
                             Console.WriteLine("Тэг успешно удален");
@@ -78,15 +79,40 @@ namespace Test_Task {
                         string parentFullPath = Console.ReadLine();
                         Console.WriteLine("Имя нового тэга:");
                         string nameNewTag = Console.ReadLine();
-                        Console.WriteLine("Тип нового тэга:");
-                        string typeNewTag = Console.ReadLine();
+                        Console.WriteLine("Тип нового тэга (double, int, bool, none):");
+                        string typeTag = Console.ReadLine().ToLower();
+                        Type typeNewTag = null;
+                        bool isSupportedType = true;
+                        switch (typeTag) {
+                            case "double":
+                                typeNewTag = typeof(double);
+                                break;
+                            case "int":
+                                typeNewTag= typeof(int);
+                                break;
+                            case "bool":
+                                typeNewTag= typeof(bool);
+                                break;
+                            case "none":
+                                typeNewTag = null;
+                                break;
+                            default:
+                                isSupportedType = false;
+                                break;
+                        }
 
-                        if (AddTag(parentFullPath, nameNewTag, typeNewTag)) {
-                            Console.WriteLine("\nТэг успешно добавлен");
+                        if (isSupportedType) {
+                            if (AddTag(parentFullPath, nameNewTag, typeNewTag)) {
+                                Console.WriteLine("\nТэг успешно добавлен");
+                            }
+                            else {
+                                Console.WriteLine("\nНе удалось добавить новый тэг");
+                            }
                         }
                         else {
-                            Console.WriteLine("\nНе удалось добавить новый тэг");
+                            Console.WriteLine("Вы ввели недопустимый тип тэга");
                         }
+
                         break;
                     case "6":
                         Console.WriteLine("Полный путь:");
@@ -117,7 +143,7 @@ namespace Test_Task {
         private void PrintTagTree(List<TagItem> tags) {
             if (tags.Count() > 0) {
                 foreach (TagItem tag in tags) {
-                    Console.WriteLine($"Полный путь: {tag.FullPath}");
+                    Console.WriteLine($"Полный путь: {tag.FullPath.Replace("root.", "")}");
                     Console.WriteLine($"Уровнь вложенности: {tag.Level}");
                     Console.WriteLine($"Тип значения: {tag.ValueType}");
                     Console.WriteLine($"Значение: {tag.Value}\n");
@@ -140,10 +166,10 @@ namespace Test_Task {
             return true;
         }
 
-        private bool AddTag(string parentFullPath, string name, string type) {
+        private bool AddTag(string parentFullPath, string name, Type type) {
             try {
                 TagItem parentTag = tagStorage.GetTag(parentFullPath);
-                parentTag.AddChildNode(name, Type.GetType(type));
+                parentTag.AddChildNode(name, type);
                 return true;
             }
             catch {
