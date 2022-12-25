@@ -46,86 +46,22 @@ namespace Test_Task {
 
                 switch (action) {
                     case "1":
-                        if (tagStorage.LoadTagTreeFromXML()) {
-                            Console.WriteLine("Дерево тэгов успешно загружено");
-                        }
-                        else {
-                            Console.WriteLine("Не удалось загрузить дерево тэгов!");
-                        }
+                        LoadTagsFromXML();
                         break;
                     case "2":
-                        if (tagStorage.UploadTagTreeToXML()) {
-                            Console.WriteLine("Дерево тэгов успешно выгружено");
-                        }
-                        else {
-                            Console.WriteLine("Не удалось выгрузить дерево тэгов!");
-                        }
+                        UploadTagsToXML();
                         break;
                     case "3":
                         PrintTagTree(tagStorage.Root.childNodes);
                         break;
                     case "4":
-                        Console.WriteLine("Введите полное имя тэга:");
-                        string tagFullPath = Console.ReadLine();
-                        if (RemoveTag(tagFullPath)) {
-                            Console.WriteLine("Тэг успешно удален");
-                        }
-                        else {
-                            Console.WriteLine("Не удалось удалить данный тэг");
-                        }
+                        RemoveTag();
                         break;
                     case "5":
-                        Console.WriteLine("Полное имя родительского тэга:");
-                        string parentFullPath = Console.ReadLine();
-                        Console.WriteLine("Имя нового тэга:");
-                        string nameNewTag = Console.ReadLine();
-                        Console.WriteLine("Тип нового тэга (double, int, bool, none):");
-                        string typeTag = Console.ReadLine().ToLower();
-                        Type typeNewTag = null;
-                        bool isSupportedType = true;
-                        switch (typeTag) {
-                            case "double":
-                                typeNewTag = typeof(double);
-                                break;
-                            case "int":
-                                typeNewTag= typeof(int);
-                                break;
-                            case "bool":
-                                typeNewTag= typeof(bool);
-                                break;
-                            case "none":
-                                typeNewTag = null;
-                                break;
-                            default:
-                                isSupportedType = false;
-                                break;
-                        }
-
-                        if (isSupportedType) {
-                            if (AddTag(parentFullPath, nameNewTag, typeNewTag)) {
-                                Console.WriteLine("\nТэг успешно добавлен");
-                            }
-                            else {
-                                Console.WriteLine("\nНе удалось добавить новый тэг");
-                            }
-                        }
-                        else {
-                            Console.WriteLine("Вы ввели недопустимый тип тэга");
-                        }
-
+                        AddNewTag();
                         break;
                     case "6":
-                        Console.WriteLine("Полный путь:");
-                        string fullPath = Console.ReadLine();
-                        Console.WriteLine("Новое имя тэга:");
-                        string newName = Console.ReadLine();
-
-                        if (RenameTag(fullPath, newName)) {
-                            Console.WriteLine("\nТэг успешно переименован");
-                        }
-                        else {
-                            Console.WriteLine("\nНеудалось переименовать тэг");
-                        }
+                        RenameTag();
                         break;
                     case "7":
                         ShowMenu();
@@ -137,6 +73,24 @@ namespace Test_Task {
                         Console.WriteLine("Недопустимое действие!");
                         break;
                 }
+            }
+        }
+
+        private void LoadTagsFromXML() {
+            if (tagStorage.LoadTagTreeFromXML()) {
+                Console.WriteLine("Дерево тэгов успешно загружено");
+            }
+            else {
+                Console.WriteLine("Не удалось загрузить дерево тэгов!");
+            }
+        }
+
+        private void UploadTagsToXML() {
+            if (tagStorage.UploadTagTreeToXML()) {
+                Console.WriteLine("Дерево тэгов успешно выгружено");
+            }
+            else {
+                Console.WriteLine("Не удалось выгрузить дерево тэгов!");
             }
         }
 
@@ -153,7 +107,18 @@ namespace Test_Task {
             }
         }
 
-        private bool RemoveTag(string fullName) {
+        private void RemoveTag() {
+            Console.WriteLine("Введите полное имя тэга:");
+            string tagFullPath = Console.ReadLine();
+            if (RemoveTagByPath(tagFullPath)) {
+                Console.WriteLine("Тэг успешно удален");
+            }
+            else {
+                Console.WriteLine("Не удалось удалить данный тэг");
+            }
+        }
+
+        private bool RemoveTagByPath(string fullName) {
             TagItem tagToRemove;
             try {
                 tagToRemove = tagStorage.GetTag(fullName);
@@ -164,6 +129,46 @@ namespace Test_Task {
             TagItem parentTag = tagStorage.GetTag(fullName.Replace($".{tagToRemove.Name}", ""));
             parentTag.RemoveChildNode(tagToRemove);
             return true;
+        }
+
+        private void AddNewTag() {
+            Console.WriteLine("Полное имя родительского тэга:");
+            string parentFullPath = Console.ReadLine();
+            Console.WriteLine("Имя нового тэга:");
+            string nameNewTag = Console.ReadLine();
+            Console.WriteLine("Тип нового тэга (double, int, bool, none):");
+            string typeTag = Console.ReadLine().ToLower();
+            Type typeNewTag = null;
+            bool isSupportedType = true;
+            switch (typeTag) {
+                case "double":
+                    typeNewTag = typeof(double);
+                    break;
+                case "int":
+                    typeNewTag = typeof(int);
+                    break;
+                case "bool":
+                    typeNewTag = typeof(bool);
+                    break;
+                case "none":
+                    typeNewTag = null;
+                    break;
+                default:
+                    isSupportedType = false;
+                    break;
+            }
+
+            if (isSupportedType) {
+                if (AddTag(parentFullPath, nameNewTag, typeNewTag)) {
+                    Console.WriteLine("\nТэг успешно добавлен");
+                }
+                else {
+                    Console.WriteLine("\nНе удалось добавить новый тэг");
+                }
+            }
+            else {
+                Console.WriteLine("Вы ввели недопустимый тип тэга");
+            }
         }
 
         private bool AddTag(string parentFullPath, string name, Type type) {
@@ -177,7 +182,21 @@ namespace Test_Task {
             }
         }
 
-        private bool RenameTag(string fullPath, string newName) {
+        private void RenameTag() {
+            Console.WriteLine("Полный путь:");
+            string fullPath = Console.ReadLine();
+            Console.WriteLine("Новое имя тэга:");
+            string newName = Console.ReadLine();
+
+            if (RenameTagByPath(fullPath, newName)) {
+                Console.WriteLine("\nТэг успешно переименован");
+            }
+            else {
+                Console.WriteLine("\nНеудалось переименовать тэг");
+            }
+        }
+
+        private bool RenameTagByPath(string fullPath, string newName) {
             try {
                 TagItem tag = tagStorage.GetTag(fullPath);
                 tag.SetName(newName);
