@@ -8,7 +8,7 @@ namespace Test_Task {
     /// <summary>
     /// Класс по работе в консольном приложении
     /// </summary>
-    internal class ProgramMenu {
+    internal class ProgramMenu: Types {
         private TagStorage tagStorage = new TagStorage();
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Test_Task {
                 foreach (TagItem tag in tags) {
                     Console.WriteLine($"Полный путь: {tag.FullPath.Replace("root.", "")}");
                     Console.WriteLine($"Уровнь вложенности: {tag.Level}");
-                    Console.WriteLine($"Тип значения: {tag.ValueType}");
+                    Console.WriteLine($"Тип значения: {TypeToString(tag.ValueType)}");
                     Console.WriteLine($"Значение: {tag.Value}\n");
 
                     PrintTagTree(tag.childNodes);
@@ -140,22 +140,12 @@ namespace Test_Task {
             string typeTag = Console.ReadLine().ToLower();
             Type typeNewTag = null;
             bool isSupportedType = true;
-            switch (typeTag) {
-                case "double":
-                    typeNewTag = typeof(double);
-                    break;
-                case "int":
-                    typeNewTag = typeof(int);
-                    break;
-                case "bool":
-                    typeNewTag = typeof(bool);
-                    break;
-                case "none":
-                    typeNewTag = null;
-                    break;
-                default:
-                    isSupportedType = false;
-                    break;
+
+            try {
+                typeNewTag = GetType(typeTag);
+            }
+            catch {
+                isSupportedType = false;
             }
 
             if (isSupportedType) {

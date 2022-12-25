@@ -9,7 +9,7 @@ namespace Test_Task {
     /// <summary>
     /// Класс по работе с коллекцией тэгов
     /// </summary>
-    internal class TagStorage {
+    internal class TagStorage: Types {
         public TagItem Root = new TagItem(name:"root", type:null);
         private const string xmlFilename = "tagTree.xml";
 
@@ -53,9 +53,19 @@ namespace Test_Task {
 
         private void TagTreeFromXML(XElement parentElem, TagItem parentTag) {
             foreach (XElement childElem in parentElem.Elements("TagItem")) {
-                Type valueType = Type.GetType(childElem.Attribute("Type").Value);
-                TagItem childTag = new TagItem(name: childElem.Attribute("Name").Value, type: valueType,
-                    value: Convert.ChangeType(childElem.Element("Value").Value, valueType), parentFullPath: parentTag.FullPath);
+                Type tagValueType;
+                object tagValue;
+                try {
+                    tagValueType = GetType(childElem.Attribute("Type").Value);
+                    tagValue = Convert.ChangeType(childElem.Element("Value").Value, tagValueType);
+                }
+                catch {
+                    tagValueType = null;
+                    tagValue = null;
+                }
+                
+                TagItem childTag = new TagItem(name: childElem.Attribute("Name").Value, type: tagValueType,
+                    value: tagValue, parentFullPath: parentTag.FullPath);
                 parentTag.AddChildNode(childTag);
 
                 TagTreeFromXML(childElem, childTag);
@@ -90,7 +100,7 @@ namespace Test_Task {
                     // Создание элемента для тега
                     XElement newTag = new XElement("TagItem",
                         new XAttribute("Name", tag.Name),
-                        new XAttribute("Type", tag.ValueType),
+                        new XAttribute("Type", TypeToString(tag.ValueType)),
                         new XElement("Value", tag.Value));
 
                     TagTreeToXml(ref newTag, tag.childNodes);
