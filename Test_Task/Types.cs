@@ -9,8 +9,7 @@ namespace Test_Task {
         private Dictionary<Type, string> typesString = new Dictionary<Type, string> {
             {typeof(int), "int" },
             {typeof(double), "double" },
-            {typeof(bool), "bool" },
-            {null, "none" }
+            {typeof(bool), "bool" }
         };
 
         private Dictionary<string, Type> stringTypes = new Dictionary<string, Type> {
@@ -25,6 +24,9 @@ namespace Test_Task {
         }
 
         public string TypeToString(Type type) {
+            if (type is null) {
+                return "none";
+            }
             return typesString[type];
         }
     }

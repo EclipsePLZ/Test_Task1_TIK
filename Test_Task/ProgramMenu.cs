@@ -149,7 +149,19 @@ namespace Test_Task {
             }
 
             if (isSupportedType) {
-                if (AddTag(parentFullPath, nameNewTag, typeNewTag)) {
+                object value = null;
+                bool isCorrectValue = true;
+                if (typeNewTag != null) {
+                    Console.WriteLine("\nЗначение тэга:");
+                    try {
+                        value = Convert.ChangeType(Console.ReadLine(), typeNewTag);
+                    }
+                    catch {
+                        isCorrectValue = false;
+                        Console.WriteLine("\nНекорретное значение тэга");
+                    }
+                }
+                if (isCorrectValue && AddTag(parentFullPath, nameNewTag, typeNewTag, value)) {
                     Console.WriteLine("\nТэг успешно добавлен");
                 }
                 else {
@@ -161,10 +173,10 @@ namespace Test_Task {
             }
         }
 
-        private bool AddTag(string parentFullPath, string name, Type type) {
+        private bool AddTag(string parentFullPath, string name, Type type, object value) {
             try {
                 TagItem parentTag = tagStorage.GetTag(parentFullPath);
-                parentTag.AddChildNode(name, type);
+                parentTag.AddChildNode(name, type, value);
                 return true;
             }
             catch {

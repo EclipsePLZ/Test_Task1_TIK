@@ -57,7 +57,12 @@ namespace Test_Task {
                 object tagValue;
                 try {
                     tagValueType = GetType(childElem.Attribute("Type").Value);
-                    tagValue = Convert.ChangeType(childElem.Element("Value").Value, tagValueType);
+                    if (childElem.Element("Value").Value == "") {
+                        tagValue = null;
+                    }
+                    else {
+                        tagValue = Convert.ChangeType(childElem.Element("Value").Value, tagValueType);
+                    }
                 }
                 catch {
                     tagValueType = null;

@@ -19,6 +19,9 @@ namespace Test_Task {
         /// </summary>
         public object Value { get; private set; }
 
+        /// <summary>
+        /// Свойство ValueType определяет тип значения тэга
+        /// </summary>
         public Type ValueType { get; private set; }
 
         /// <summary>
@@ -92,8 +95,8 @@ namespace Test_Task {
         /// </summary>
         /// <param name="childName">Имя дочернего тэга</param>
         /// <param name="childType">Тип значения дочернего тэга</param>
-        public void AddChildNode(string childName, Type valueType) {
-            TagItem childNode = new TagItem(name:childName, type: valueType, parentFullPath: FullPath);
+        public void AddChildNode(string childName, Type valueType, object valueTag) {
+            TagItem childNode = new TagItem(name:childName, type: valueType, value: valueTag, parentFullPath: FullPath);
             childNodes.Add(childNode);
         }
 
