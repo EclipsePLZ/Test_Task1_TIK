@@ -15,31 +15,15 @@ namespace Test_Task {
         /// Запуск консольного меню
         /// </summary>
         public void StartMenu() {
-            ShowMenu();
             StartWork();
-        }
-
-        /// <summary>
-        /// Вывод меню программы
-        /// </summary>
-        private void ShowMenu() {
-            Console.WriteLine("Доступные действия:");
-            Console.WriteLine("  1. Загрузка дерева тэгов из XML файла.");
-            Console.WriteLine("  2. Выгрузка дерева тэгов в XML файл.");
-            Console.WriteLine("  3. Вывод списка тэгов.");
-            Console.WriteLine("  4. Удаление тэга.");
-            Console.WriteLine("  5. Добавление нового тэга.");
-            Console.WriteLine("  6. Переименование тэга.");
-            Console.WriteLine("  7. Вывести меню программы.");
-            Console.WriteLine("  8. Завершить программу.");
         }
 
         /// <summary>
         /// Запуск работы программы
         /// </summary>
         private void StartWork() {
-
             while (true) {
+                ShowMenu();
                 Console.WriteLine("\n\nВведите номер действия:");
                 string action = Console.ReadLine();
                 Console.WriteLine();
@@ -64,16 +48,29 @@ namespace Test_Task {
                         RenameTag();
                         break;
                     case "7":
-                        ShowMenu();
-                        break;
-                    case "8":
                         StopWork();
                         break;
                     default:
                         Console.WriteLine("Недопустимое действие!");
                         break;
                 }
+
+                Console.WriteLine("\n");
             }
+        }
+
+        /// <summary>
+        /// Вывод меню программы
+        /// </summary>
+        private void ShowMenu() {
+            Console.WriteLine("Доступные действия:");
+            Console.WriteLine("  1. Загрузка дерева тэгов из XML файла.");
+            Console.WriteLine("  2. Выгрузка дерева тэгов в XML файл.");
+            Console.WriteLine("  3. Вывод списка тэгов.");
+            Console.WriteLine("  4. Удаление тэга.");
+            Console.WriteLine("  5. Добавление нового тэга.");
+            Console.WriteLine("  6. Переименование тэга.");
+            Console.WriteLine("  7. Завершить программу.");
         }
 
         private void LoadTagsFromXML() {
@@ -114,16 +111,13 @@ namespace Test_Task {
                 Console.WriteLine("Тэг успешно удален");
             }
             else {
-                Console.WriteLine("Не удалось удалить данный тэг");
+                Console.WriteLine("Не удалось найти тэг с таким именем");
             }
         }
 
         private bool RemoveTagByPath(string fullName) {
-            TagItem tagToRemove;
-            try {
-                tagToRemove = tagStorage.GetTag(fullName);
-            }
-            catch {
+            TagItem tagToRemove = tagStorage.GetTag(fullName);
+            if (tagToRemove == null) {
                 return false;
             }
             TagItem parentTag = tagStorage.GetTag(fullName.Replace($".{tagToRemove.Name}", ""));
@@ -152,13 +146,16 @@ namespace Test_Task {
                 object value = null;
                 bool isCorrectValue = true;
                 if (typeNewTag != null) {
-                    Console.WriteLine("\nЗначение тэга:");
-                    try {
-                        value = Convert.ChangeType(Console.ReadLine(), typeNewTag);
-                    }
-                    catch {
-                        isCorrectValue = false;
-                        Console.WriteLine("\nНекорретное значение тэга");
+                    Console.WriteLine("Значение тэга:");
+                    string valueInput = Console.ReadLine();
+                    if (valueInput != "none") {
+                        try {
+                            value = Convert.ChangeType(valueInput, typeNewTag);
+                        }
+                        catch {
+                            isCorrectValue = false;
+                            Console.WriteLine("\nНекорретное значение тэга");
+                        }
                     }
                 }
                 if (isCorrectValue && AddTag(parentFullPath, nameNewTag, typeNewTag, value)) {
@@ -174,14 +171,12 @@ namespace Test_Task {
         }
 
         private bool AddTag(string parentFullPath, string name, Type type, object value) {
-            try {
-                TagItem parentTag = tagStorage.GetTag(parentFullPath);
-                parentTag.AddChildNode(name, type, value);
-                return true;
-            }
-            catch {
+            TagItem parentTag = tagStorage.GetTag(parentFullPath);
+            if (parentTag == null) {
                 return false;
             }
+            parentTag.AddChildNode(name, type, value);
+            return true;
         }
 
         private void RenameTag() {
@@ -199,14 +194,12 @@ namespace Test_Task {
         }
 
         private bool RenameTagByPath(string fullPath, string newName) {
-            try {
-                TagItem tag = tagStorage.GetTag(fullPath);
-                tag.SetName(newName);
-                return true;
-            }
-            catch {
+            TagItem tag = tagStorage.GetTag(fullPath);
+            if (tag == null) {
                 return false;
             }
+            tag.SetName(newName);
+            return true;
         }
 
         /// <summary>

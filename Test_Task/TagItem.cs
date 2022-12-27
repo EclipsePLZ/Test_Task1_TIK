@@ -85,7 +85,7 @@ namespace Test_Task {
         private void UpdateFullPath(string oldParentName, string newParentName) {
             FullPath = FullPath.Replace(oldParentName, newParentName);
             foreach (TagItem child in childNodes) {
-                UpdateFullPath(oldParentName, newParentName);
+                child.UpdateFullPath(oldParentName, newParentName);
             }
         }
 
