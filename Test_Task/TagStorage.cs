@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Test_Task {
@@ -51,6 +49,11 @@ namespace Test_Task {
             return true;
         }
 
+        /// <summary>
+        /// Формирование дерева тэгов из элементов xml-файла
+        /// </summary>
+        /// <param name="parentElem">Элемент xml-файла</param>
+        /// <param name="parentTag">Тэг в дереве тэгов</param>
         private void TagTreeFromXML(XElement parentElem, TagItem parentTag) {
             foreach (XElement childElem in parentElem.Elements("TagItem")) {
                 Type tagValueType;
@@ -99,6 +102,11 @@ namespace Test_Task {
             }
         }
 
+        /// <summary>
+        /// Выгрузка списка тэгов в xml-файл
+        /// </summary>
+        /// <param name="parentElem">Родительский элемент xml-файла</param>
+        /// <param name="tags">Список тэгов</param>
         private void TagTreeToXml(ref XElement parentElem, List<TagItem> tags) {
             if (tags.Count() > 0) {
                 foreach (TagItem tag in tags) {

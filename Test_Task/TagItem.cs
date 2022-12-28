@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Test_Task {
     /// <summary>
@@ -22,7 +19,7 @@ namespace Test_Task {
         /// <summary>
         /// Свойство ValueType определяет тип значения тэга
         /// </summary>
-        public Type ValueType { get; private set; }
+        public Type ValueType { get; }
 
         /// <summary>
         /// Свойство Level определяет уровень вложенности тэга
@@ -89,17 +86,21 @@ namespace Test_Task {
             }
         }
 
-
         /// <summary>
         /// Добавление дочернего тэга
         /// </summary>
         /// <param name="childName">Имя дочернего тэга</param>
-        /// <param name="childType">Тип значения дочернего тэга</param>
+        /// <param name="valueType">Тип значения дочернего тэга</param>
+        /// <param name="valueTag">Значение дочернего тэга</param>
         public void AddChildNode(string childName, Type valueType, object valueTag) {
             TagItem childNode = new TagItem(name:childName, type: valueType, value: valueTag, parentFullPath: FullPath);
             childNodes.Add(childNode);
         }
 
+        /// <summary>
+        /// Добавление дочернего тэга
+        /// </summary>
+        /// <param name="childNode">Дочерний тэг</param>
         public void AddChildNode(TagItem childNode) {
             childNodes.Add(childNode);
         }
@@ -111,7 +112,7 @@ namespace Test_Task {
         public void RemoveChildNode(TagItem childNode) {
             if (childNodes.Contains(childNode)) {
 
-                // Cascading removal of child nodes
+                // Каскадное удаление дочерних тэгов
                 foreach (TagItem child in childNode.childNodes) {
                     childNode.RemoveChildNode(child);
                 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Test_Task {
     /// <summary>
@@ -73,6 +71,9 @@ namespace Test_Task {
             Console.WriteLine("  7. Завершить программу.");
         }
 
+        /// <summary>
+        /// Загрузка дерева тэгов из xml-файла
+        /// </summary>
         private void LoadTagsFromXML() {
             if (tagStorage.LoadTagTreeFromXML()) {
                 Console.WriteLine("Дерево тэгов успешно загружено");
@@ -82,6 +83,9 @@ namespace Test_Task {
             }
         }
 
+        /// <summary>
+        /// Выгрузка дерева тэгов в xml-файл
+        /// </summary>
         private void UploadTagsToXML() {
             if (tagStorage.UploadTagTreeToXML()) {
                 Console.WriteLine("Дерево тэгов успешно выгружено");
@@ -91,6 +95,10 @@ namespace Test_Task {
             }
         }
 
+        /// <summary>
+        /// Вывод информации о тэгах в консоль
+        /// </summary>
+        /// <param name="tags">Список тэгов</param>
         private void PrintTagTree(List<TagItem> tags) {
             if (tags.Count() > 0) {
                 foreach (TagItem tag in tags) {
@@ -104,6 +112,9 @@ namespace Test_Task {
             }
         }
 
+        /// <summary>
+        /// Удаление тэга
+        /// </summary>
         private void RemoveTag() {
             Console.WriteLine("Введите полное имя тэга:");
             string tagFullPath = Console.ReadLine();
@@ -115,6 +126,11 @@ namespace Test_Task {
             }
         }
 
+        /// <summary>
+        /// Удаление тэга по полному имени
+        /// </summary>
+        /// <param name="fullName">Полное имя тэга</param>
+        /// <returns>Возвращает true если удаление выполнено успешно</returns>
         private bool RemoveTagByPath(string fullName) {
             TagItem tagToRemove = tagStorage.GetTag(fullName);
             if (tagToRemove == null) {
@@ -125,6 +141,9 @@ namespace Test_Task {
             return true;
         }
 
+        /// <summary>
+        /// Добавление нового тэга
+        /// </summary>
         private void AddNewTag() {
             Console.WriteLine("Полное имя родительского тэга:");
             string parentFullPath = Console.ReadLine();
@@ -170,6 +189,14 @@ namespace Test_Task {
             }
         }
 
+        /// <summary>
+        /// Добавление нового тэга по полному имени родительского тэга
+        /// </summary>
+        /// <param name="parentFullPath">Полное имя родительского тэга</param>
+        /// <param name="name">Имя нового тэга</param>
+        /// <param name="type">Тип нового тэга</param>
+        /// <param name="value">Значение нового тэга</param>
+        /// <returns>Возвращает true если добавление выполнено успешно</returns>
         private bool AddTag(string parentFullPath, string name, Type type, object value) {
             TagItem parentTag = tagStorage.GetTag(parentFullPath);
             if (parentTag == null) {
@@ -179,6 +206,9 @@ namespace Test_Task {
             return true;
         }
 
+        /// <summary>
+        /// Переименовать тэг
+        /// </summary>
         private void RenameTag() {
             Console.WriteLine("Полный путь:");
             string fullPath = Console.ReadLine();
@@ -193,6 +223,12 @@ namespace Test_Task {
             }
         }
 
+        /// <summary>
+        /// Переименовать тэг по полному имени
+        /// </summary>
+        /// <param name="fullPath">Полное имя тэга</param>
+        /// <param name="newName">Новое имя тэга</param>
+        /// <returns></returns>
         private bool RenameTagByPath(string fullPath, string newName) {
             TagItem tag = tagStorage.GetTag(fullPath);
             if (tag == null) {
