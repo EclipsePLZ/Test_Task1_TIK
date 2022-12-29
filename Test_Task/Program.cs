@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace Test_Task {
     internal class Program {
         static void Main(string[] args) {
-            
+            ProgramMenu menu = new ProgramMenu();
+            menu.StartMenu();
         }
     }
 }
