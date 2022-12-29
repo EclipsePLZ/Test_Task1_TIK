@@ -23,6 +23,7 @@ namespace Test_Task {
             string[] tags = tagPath.Split('.');
             TagItem node = Root;
 
+            // Получаем искомый тэг (null - если такого тэга нет)
             foreach (string tag in tags) {
                 node = node.GetChildNode(tag);
             }
@@ -55,6 +56,7 @@ namespace Test_Task {
         /// <param name="parentElem">Элемент xml-файла</param>
         /// <param name="parentTag">Тэг в дереве тэгов</param>
         private void TagTreeFromXML(XElement parentElem, TagItem parentTag) {
+            // Перебираем все элменты TagItem (тэги) xml-файла
             foreach (XElement childElem in parentElem.Elements("TagItem")) {
                 Type tagValueType;
                 object tagValue;
@@ -72,8 +74,10 @@ namespace Test_Task {
                     tagValue = null;
                 }
                 
+                // Создаем новый дочерний тэг
                 TagItem childTag = new TagItem(name: childElem.Attribute("Name").Value, type: tagValueType,
                     value: tagValue, parentFullPath: parentTag.FullPath);
+
                 parentTag.AddChildNode(childTag);
 
                 TagTreeFromXML(childElem, childTag);
@@ -110,12 +114,13 @@ namespace Test_Task {
         private void TagTreeToXml(ref XElement parentElem, List<TagItem> tags) {
             if (tags.Count() > 0) {
                 foreach (TagItem tag in tags) {
-                    // Создание элемента для тега
+                    // Создание xml-элемента для тега
                     XElement newTag = new XElement("TagItem",
                         new XAttribute("Name", tag.Name),
                         new XAttribute("Type", TypeToString(tag.ValueType)),
                         new XElement("Value", tag.Value));
 
+                    // Создаем элменты для дочерних тэгов
                     TagTreeToXml(ref newTag, tag.childNodes);
 
                     // Добавление элемента в дерево тэгов

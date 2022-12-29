@@ -132,11 +132,15 @@ namespace Test_Task {
         /// <param name="fullName">Полное имя тэга</param>
         /// <returns>Возвращает true если удаление выполнено успешно</returns>
         private bool RemoveTagByPath(string fullName) {
+            // Получаем тэг для удаления
             TagItem tagToRemove = tagStorage.GetTag(fullName);
             if (tagToRemove == null) {
                 return false;
             }
+
+            // Получаем его родительский тэг
             TagItem parentTag = tagStorage.GetTag(fullName.Replace($".{tagToRemove.Name}", ""));
+
             parentTag.RemoveChildNode(tagToRemove);
             return true;
         }
@@ -155,6 +159,7 @@ namespace Test_Task {
             bool isSupportedType = true;
 
             try {
+                // Получаем системный тип
                 typeNewTag = GetType(typeTag);
             }
             catch {
@@ -165,7 +170,7 @@ namespace Test_Task {
                 object value = null;
                 bool isCorrectValue = true;
                 if (typeNewTag != null) {
-                    Console.WriteLine("Значение тэга:");
+                    Console.WriteLine("Значение тэга (none - если не хранит значение):");
                     string valueInput = Console.ReadLine();
                     if (valueInput != "none") {
                         try {
@@ -198,6 +203,7 @@ namespace Test_Task {
         /// <param name="value">Значение нового тэга</param>
         /// <returns>Возвращает true если добавление выполнено успешно</returns>
         private bool AddTag(string parentFullPath, string name, Type type, object value) {
+            // Получаем родительский тэг
             TagItem parentTag = tagStorage.GetTag(parentFullPath);
             if (parentTag == null) {
                 return false;
