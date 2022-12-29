@@ -70,7 +70,8 @@ namespace Test_Task {
         /// </summary>
         /// <param name="name">Новое имя тэга</param>
         public void SetName(string name) {
-            UpdateFullPath(Name, name);
+            FullPath = FullPath.Replace(Name, name);
+            UpdateFullPathChild(Name + '.', name + '.');
             Name = name;
         }
 
@@ -79,10 +80,10 @@ namespace Test_Task {
         /// </summary>
         /// <param name="oldParentName">Старое имя родительского тэга</param>
         /// <param name="newParentName">Новое имя родительского тэга</param>
-        private void UpdateFullPath(string oldParentName, string newParentName) {
+        private void UpdateFullPathChild(string oldParentName, string newParentName) {
             FullPath = FullPath.Replace(oldParentName, newParentName);
             foreach (TagItem child in childNodes) {
-                child.UpdateFullPath(oldParentName, newParentName);
+                child.UpdateFullPathChild(oldParentName, newParentName);
             }
         }
 
@@ -111,12 +112,6 @@ namespace Test_Task {
         /// <param name="childNode">Дочерний тэг</param>
         public void RemoveChildNode(TagItem childNode) {
             if (childNodes.Contains(childNode)) {
-
-                // Каскадное удаление дочерних тэгов
-                foreach (TagItem child in childNode.childNodes) {
-                    childNode.RemoveChildNode(child);
-                }
-
                 childNodes.Remove(childNode);
             }
         }

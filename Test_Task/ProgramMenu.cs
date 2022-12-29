@@ -75,6 +75,7 @@ namespace Test_Task {
         /// Загрузка дерева тэгов из xml-файла
         /// </summary>
         private void LoadTagsFromXML() {
+            tagStorage = new TagStorage();
             if (tagStorage.LoadTagTreeFromXML()) {
                 Console.WriteLine("Дерево тэгов успешно загружено");
             }
@@ -139,7 +140,8 @@ namespace Test_Task {
             }
 
             // Получаем его родительский тэг
-            TagItem parentTag = tagStorage.GetTag(fullName.Replace($".{tagToRemove.Name}", ""));
+            TagItem parentTag = tagStorage.GetTag(fullName.Replace($".{tagToRemove.Name}", "")
+                .Replace($"{tagToRemove.Name}", ""));
 
             parentTag.RemoveChildNode(tagToRemove);
             return true;
