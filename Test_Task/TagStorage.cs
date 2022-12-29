@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -9,7 +10,9 @@ namespace Test_Task {
     /// </summary>
     internal class TagStorage: Types {
         public TagItem Root = new TagItem(name:"root", type:null);
-        private const string xmlFilename = "tagTree.xml";
+        //private const string xmlFilename = "tagTree.xml"
+        static string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+        string xmlFilename = projectDirectory + "\\tagTree.xml";
 
         /// <summary>
         /// Поиск по полному имени тэга
