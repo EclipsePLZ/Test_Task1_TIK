@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+  <TagItem Name="tag1" Type="int">
+    <Value>10</Value>
+    <TagItem Name="tag11" Type="bool">
+      <Value>true</Value>
+      <TagItem Name="tag111" Type="none">
+        <Value />
+      </TagItem>
+      <TagItem Name="tag112" Type="int">
+        <Value>5</Value>
+        <TagItem Name="tag1121" Type="none">
+          <Value />
+        </TagItem>
+      </TagItem>
+    </TagItem>
+    <TagItem Name="tag12" Type="none">
+      <Value />
+      <TagItem Name="tag121" Type="none">
+        <Value />
+      </TagItem>
+    </TagItem>
+  </TagItem>
+  <TagItem Name="tag2" Type="none">
+    <Value />
+    <TagItem Name="tag21" Type="int">
+      <Value>10</Value>
+    </TagItem>
+    <TagItem Name="tag22" Type="bool">
+      <Value>false</Value>
+    </TagItem>
+  </TagItem>
+  <TagItem Name="tag3" Type="bool">
+    <Value>false</Value>
+    <TagItem Name="tag31" Type="none">
+      <Value />
+      <TagItem Name="tag311" Type="none">
+        <Value />
+      </TagItem>
+      <TagItem Name="tag312" Type="bool">
+        <Value>false</Value>
+        <TagItem Name="tag3121" Type="bool">
+          <Value>false</Value>
+        </TagItem>
+      </TagItem>
+    </TagItem>
+    <TagItem Name="tag32" Type="int">
+      <Value>23</Value>
+    </TagItem>
+  </TagItem>
+  <TagItem Name="tag4" Type="none">
+    <Value />
+    <TagItem Name="tag41" Type="none">
+      <Value />
+    </TagItem>
+    <TagItem Name="tag42" Type="none">
+      <Value />
+      <TagItem Name="tag421" Type="none">
+        <Value />
+        <TagItem Name="tag4211" Type="bool">
+          <Value>true</Value>
+        </TagItem>
+      </TagItem>
+    </TagItem>
+  </TagItem>
+</Root>
