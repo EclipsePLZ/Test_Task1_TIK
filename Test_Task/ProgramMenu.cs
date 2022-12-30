@@ -184,11 +184,13 @@ namespace Test_Task {
                         }
                     }
                 }
-                if (isCorrectValue && AddTag(parentFullPath, nameNewTag, typeNewTag, value)) {
-                    Console.WriteLine("\nТэг успешно добавлен");
-                }
-                else {
-                    Console.WriteLine("\nНе удалось добавить новый тэг");
+                if (isCorrectValue) {
+                    if (AddTag(parentFullPath, nameNewTag, typeNewTag, value)) {
+                        Console.WriteLine("\nТэг успешно добавлен");
+                    }
+                    else {
+                        Console.WriteLine("\nНе удалось добавить новый тэг (не существует родительский тэг)");
+                    }
                 }
             }
             else {

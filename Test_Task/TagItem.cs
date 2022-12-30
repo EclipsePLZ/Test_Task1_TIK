@@ -5,7 +5,7 @@ namespace Test_Task {
     /// <summary>
     /// Класс по работе с Тэгами
     /// </summary>
-    public class TagItem {
+    internal class TagItem {
         /// <summary>
         /// Свойство Name определяет имя тэга
         /// </summary>
